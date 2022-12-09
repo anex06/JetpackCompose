@@ -3,10 +3,7 @@ package com.anup.myjetpackcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,12 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.anup.myjetpackcompose.ui.theme.MyJetpackComposeTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val  scope = rememberCoroutineScope()
             val scaffoldState = rememberScaffoldState()
             var textFiledState by remember {
                 mutableStateOf("")
@@ -28,6 +27,7 @@ class MainActivity : ComponentActivity() {
            Scaffold(modifier = Modifier.fillMaxSize(),
                scaffoldState = scaffoldState) {
                Column(
+                   verticalArrangement=Arrangement.Center,
                    horizontalAlignment = Alignment.CenterHorizontally,
                    modifier = Modifier
                        .fillMaxSize()
@@ -41,6 +41,14 @@ class MainActivity : ComponentActivity() {
                        modifier = Modifier.fillMaxWidth()
 
                    )
+                   Spacer(modifier = Modifier.height(16.dp))
+                   Button(onClick = {
+                       scope.launch {
+                           scaffoldState.snackbarHostState.showSnackbar("Hello $textFiledState")
+                       }
+                   }) {
+                       Text(text = "Greet me")
+                   }
                }
            }
         }
